@@ -6,6 +6,14 @@ const DispatchSchema = new mongoose.Schema({
         required: [true, "must provide sender's name"],
         trim: true
     },
+    order_id: {
+        type: String,
+    },
+    status: {
+        type:String,
+        enum : ['pending', 'picked-up', 'in-transit', 'delivered' ],
+        default: 'pending'
+    },
     sendersAddress: {
         type: String,
         required: [true, "must provide an address"],
@@ -37,6 +45,11 @@ const DispatchSchema = new mongoose.Schema({
         trim: true
     },
     sendersphoneNumber : {
+        type: String,
+        required : [true, "must provide a valid phone number"]
+
+    },
+    receiversphoneNumber : {
         type: String,
         required : [true, "must provide a valid phone number"]
 

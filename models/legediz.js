@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
-const userSchema = new mongoose.Schema({
+const legedizSchema = new mongoose.Schema({
 	firstName : {
 		type: String,
 		trim : true,
@@ -32,17 +32,69 @@ const userSchema = new mongoose.Schema({
         type:String,
         required: [true, 'Please enter phone number'],
 		minLength: 14,
-        unique: true
-
+		unique: true
+        
     },
-    referralCode: {
-        type: String,
-        unique: true
-    },
-    referrer: {
+	referrer: {
 		type: String,
-        default: null
+		default: null
 	},
+    type_of_vehicle: {
+        type:String,
+        enum : ['Car', 'Motorcycle', 'Legediz Benz']
+    },
+    marital_status: {
+        type:String,
+        enum : ['Single', 'Married', 'Others'],
+		required : [true, 'Must provide marital status']
+    },
+    nin_number:{
+        type: Number,
+		required : [true, 'Must provide nin number'],
+		unique: true
+    },
+    next_of_kin: {
+        type: String,
+		required : [true, 'Must provide next of kin']
+    },
+    picture_of_id:{
+        type:String
+    },
+    selfie_of_id: {
+        type:String
+    },
+	cloudinary_id: {
+		type: String
+	},
+    guarantor1_name: {
+        type: String,
+		required : [true, 'Must provide guarantors name']
+        
+    },
+    guarantor2_name: {
+        type: String,
+		required : [true, 'Must provide guarantors name']
+    },
+    guarantor1_number: {
+        type: String,
+        maxLength: 15,
+		required : [true, 'Must provide guarantors number']        
+    },
+    guarantor2_number: {
+        type: String,
+        maxLength: 15,
+		required : [true, 'Must provide guarantors number']
+    },
+    guarantor1_relationship: {
+        type: String,
+        enum: ['aunty', 'brother', 'wife', 'cousin', 'father', 'mother', 'daughter', 'nephew', 'niece', 'sister', 'close friend', 'son'],
+		required : [true, 'Must provide guarantors relationship']        
+    },
+    guarantor2_relationship: {
+        type: String,
+        enum: ['aunty', 'brother', 'wife', 'cousin', 'father', 'mother', 'daughter', 'nephew', 'niece', 'sister', 'close friend', 'son'],
+		required : [true, 'Must provide guarantors relationship']        
+    },
 	passwordResetToken: String,
 	passwordResetExpires: Date,
 	confirmEmailToken: String,
@@ -59,7 +111,7 @@ const userSchema = new mongoose.Schema({
 });
 
 //Document middleware for encrpting password
-userSchema.pre('save', async function (next) {
+legedizSchema.pre('save', async function (next) {
 	if (!this.isModified('password')) {
 		return next();
 	}
@@ -69,7 +121,7 @@ userSchema.pre('save', async function (next) {
 });
 
 //Document middleware for indicating password change
-userSchema.pre('save', function (next) {
+legedizSchema.pre('save', function (next) {
 	if (!this.isModified('password') || this.isNew) {
 		return next();
 	}
@@ -78,7 +130,7 @@ userSchema.pre('save', function (next) {
 });
 
 //this creates a function available to all users used to compare user password to another
-userSchema.methods.correctPassword = async function (
+legedizSchema.methods.correctPassword = async function (
 	candidatePassword,
 	userPassword
 ) {
@@ -86,7 +138,7 @@ userSchema.methods.correctPassword = async function (
 };
 
 //this creates a schema function that makes the password reset token
-userSchema.methods.createPasswordResetToken = function () {
+legedizSchema.methods.createPasswordResetToken = function () {
 	const resetToken = crypto.randomBytes(32).toString('hex');
 
 	this.passwordResetToken = crypto
@@ -99,7 +151,7 @@ userSchema.methods.createPasswordResetToken = function () {
 };
 
 //this creates a schema function that makes the email confirm token
-userSchema.methods.createEmailConfirmToken = function () {
+legedizSchema.methods.createEmailConfirmToken = function () {
 	const confirmToken = crypto.randomBytes(32).toString('hex');
 
 	this.confirmEmailToken = crypto
@@ -110,4 +162,4 @@ userSchema.methods.createEmailConfirmToken = function () {
 	return confirmToken;
 };
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Legediz', legedizSchema);

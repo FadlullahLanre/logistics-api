@@ -8,6 +8,8 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const userRoute = require('./routes/user');
 const dispatchRoute = require('./routes/dispatch');
+const legedizRoute = require('./routes/legediz');
+const waitingRoute = require('./routes/waitingList');
 const connectDB = require('./DB/connect');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./utils/globalErrors');
@@ -40,7 +42,9 @@ app.use(mongoSanitize());
 app.use(xss());
 
 app.use('/api/v1/users', userRoute);
+app.use('/api/v1/waitingList', waitingRoute);
 app.use('/api/v1/dispatch', dispatchRoute);
+app.use('/api/v1/legediz', legedizRoute);
 app.get('/', function (req, res) {
 	res.send({ message : 'Welcome to the Todo Application!'});
   
