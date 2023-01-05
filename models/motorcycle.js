@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
-const legedizSchema = new mongoose.Schema({
+const motorcycleSchema = new mongoose.Schema({
 	firstName : {
 		type: String,
 		trim : true,
@@ -35,6 +35,10 @@ const legedizSchema = new mongoose.Schema({
 		unique: true
         
     },
+    homeAddress: {
+        type: String,
+        required: [true, 'Please enter home address']
+    },
 	referrer: {
 		type: String,
 		default: ''
@@ -43,37 +47,50 @@ const legedizSchema = new mongoose.Schema({
         type: String,
         unique: true
     },
-    type_of_vehicle: {
-        type:String,
-        enum : ['Car', 'Motorcycle', 'Legediz Benz']
-    },
-    marital_status: {
+    motorcycle_manufacturer: {
         type:String,
         enum : ['Single', 'Married', 'Others'],
-		required : [true, 'Must provide marital status']
+		required : [true, 'Must provide motorcycle manufacturer']
     },
-    nin_number:{
-        type: Number,
-		required : [true, 'Must provide nin number'],
-		unique: true
-    },
-    next_of_kin: {
+    motorcycle_model:{
         type: String,
-		required : [true, 'Must provide next of kin']
+        enum: [],
+		required : [true, 'Must provide model'],
+
     },
-    picture_of_id:{
+    motorcycle_color: {
+        type: String,
+        required : [true, 'Must provide motorcycle color']
+    },
+    motorcycle_year: {
+        type: String,
+        required : [true, 'Must provide motorcycle year']
+    },
+    motorcycle_plate_no: {
+        type: String,
+		required : [true, 'Must provide plate number']
+    },
+    picture_of_motorcycle:{
         type:String
     },
-    selfie_of_id: {
+    riders_profile_pic:{
         type:String
     },
-	// cloudinary_id: {
-	// 	type: String
-	// },
+    proof_of_vehicle_insurance:{
+        type:String
+    },
+    picture_of_driver_license: {
+        type:String
+    },
+    state_carriage_permit: {
+        type: String
+    },
+	riders_card_no: {
+		type: String
+	},
     guarantor1_name: {
         type: String,
 		required : [true, 'Must provide guarantors name']
-        
     },
     guarantor2_name: {
         type: String,
@@ -115,7 +132,7 @@ const legedizSchema = new mongoose.Schema({
 });
 
 //Document middleware for encrpting password
-legedizSchema.pre('save', async function (next) {
+motorcycleSchema.pre('save', async function (next) {
 	if (!this.isModified('password')) {
 		return next();
 	}
@@ -125,7 +142,7 @@ legedizSchema.pre('save', async function (next) {
 });
 
 //Document middleware for indicating password change
-legedizSchema.pre('save', function (next) {
+motorcycleSchema.pre('save', function (next) {
 	if (!this.isModified('password') || this.isNew) {
 		return next();
 	}
@@ -134,7 +151,7 @@ legedizSchema.pre('save', function (next) {
 });
 
 //this creates a function available to all users used to compare user password to another
-legedizSchema.methods.correctPassword = async function (
+motorcycleSchema.methods.correctPassword = async function (
 	candidatePassword,
 	userPassword
 ) {
@@ -142,7 +159,7 @@ legedizSchema.methods.correctPassword = async function (
 };
 
 //this creates a schema function that makes the password reset token
-legedizSchema.methods.createPasswordResetToken = function () {
+motorcycleSchema.methods.createPasswordResetToken = function () {
 	const resetToken = crypto.randomBytes(32).toString('hex');
 
 	this.passwordResetToken = crypto
@@ -166,4 +183,4 @@ legedizSchema.methods.createEmailConfirmToken = function () {
 	return confirmToken;
 };
 
-module.exports = mongoose.model('Legediz', legedizSchema);
+module.exports = mongoose.model('Motorcycle', motorcycleSchema);

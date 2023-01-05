@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema({
     },
     referrer: {
 		type: String,
-        default: null
+        default: ''
 	},
 	passwordResetToken: String,
 	passwordResetExpires: Date,

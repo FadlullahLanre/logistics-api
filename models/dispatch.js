@@ -29,6 +29,10 @@ const DispatchSchema = new mongoose.Schema({
         enum : ['electronics', 'clothing', 'documents', 'food', 'shoes', 'health', 'products'],
         required : [true, "must provide category"]
     },
+    delivery_type: {
+        type: String,
+        enum: ['next-day', 'instant']
+    },
     sendersphoneNumber : {
         type: String,
         required : [true, "must provide a valid phone number"]

@@ -15,6 +15,7 @@ const AppError = require('./utils/appError');
 const globalErrorHandler = require('./utils/globalErrors');
 const catchAsync = require('./utils/catchAsync');
 
+
 const app = express();
 // any origin can access the resource
 app.use(cors({
@@ -46,7 +47,7 @@ app.use('/api/v1/waitingList', waitingRoute);
 app.use('/api/v1/dispatch', dispatchRoute);
 app.use('/api/v1/legediz', legedizRoute);
 app.get('/', function (req, res) {
-	res.send({ message : 'Welcome to the Todo Application!'});
+	res.send({ message : 'Welcome to the Logistic Application!'});
   
   });
 
@@ -59,7 +60,7 @@ app.all('*', (req, res, next) => {
 
 const port = process.env.PORT || 4000;
 const start = catchAsync(async () => {
-	await connectDB(process.env.MONGO_URI_DEV);
+	await connectDB(process.env.MONGO_URI);
 
 	app.listen(port, () => {
 		console.log(`Server is listening on port ${port}...`);

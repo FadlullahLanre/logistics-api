@@ -341,5 +341,6 @@ module.exports = {
     resendEmail,
     protect,
     logout,
-    updateMe
+    updateMe,
+    generateReferralCode
 };
